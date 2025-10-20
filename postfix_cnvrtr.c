@@ -27,6 +27,7 @@ int prec(char operator) {
     switch (operator) {
     case '^':
         return 3;
+    case '%':
     case '*':
     case '/':
         return 2;
@@ -57,7 +58,7 @@ void In2Post(char infix[], char postfix[]) {
                 postfix[j++] = ' ';
             }
             pop();
-        } else if (c == '+' || c == '-' || c == '*' || c == '/' || c == '^') {
+        } else if (c == '+' || c == '-' || c == '*' || c == '/' || c == '%' || c == '^') {
             while (top != -1 &&
                    ((prec(stack[top]) > prec(c)) || (prec(stack[top]) == prec(c) && c != '^'))) {
                 postfix[j++] = pop();
@@ -89,7 +90,7 @@ int Eval(char postfix[]) {
             }
             stack1[++t] = num;
         } else if (postfix[i] == '+' || postfix[i] == '-' || postfix[i] == '*' ||
-                   postfix[i] == '/' || postfix[i] == '^') {
+                   postfix[i] == '/' || postfix[i] == '%' || postfix[i] == '^') {
             if (t < 1) {
                 printf("Error: Invalid postfix expression\n");
                 return 0;
@@ -114,6 +115,13 @@ int Eval(char postfix[]) {
                     return 0;
                 }
                 stack1[++t] = a / b;
+                break;
+            case '%':
+                if (b == 0) {
+                    printf("Error: Division by zero\n");
+                    return 0;
+                }
+                stack1[++t] = a % b;
                 break;
             case '^':
                 stack1[++t] = (int)pow(a, b);

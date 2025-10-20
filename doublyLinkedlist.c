@@ -12,13 +12,13 @@ Node *head = NULL;
 Node *curr = NULL;
 
 void visit(char *url) {
-    Node *newNode = (Node *)malloc(sizeof(Node));
-    strcpy(newNode->url, url);
-    newNode->prev = curr;
-    newNode->next = NULL;
+    Node *new_node = (Node *)malloc(sizeof(Node));
+    strcpy(new_node->url, url);
+    new_node->prev = curr;
+    new_node->next = NULL;
     if (head == NULL) {
-        head = newNode;
-        curr = newNode;
+        head = new_node;
+        curr = new_node;
     } else {
         Node *tmp = curr->next;
         while (tmp != NULL) {
@@ -26,9 +26,9 @@ void visit(char *url) {
             tmp = tmp->next;
             free(del);
         }
-        curr->next = newNode;
-        newNode->prev = curr;
-        curr = newNode;
+        curr->next = new_node;
+        new_node->prev = curr;
+        curr = new_node;
     }
     printf("Visited:%s\n", curr->url);
 }
