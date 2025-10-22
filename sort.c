@@ -92,8 +92,7 @@ void merge(int data[], int size, int begin, int mid, int end) {
 void mergeSort(int data[], int begin, int mid, int end) {
     if (begin >= end)
         return;
-    int mid = (begin + end) / 2;
-    mergeSort(data, begin, mid);
+    int mid = mergeSort(data, begin, mid);
     mergeSort(data, mid + 1, end);
     merge(data, begin, mid, end);
 }
