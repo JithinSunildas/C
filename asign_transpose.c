@@ -91,14 +91,12 @@ void print(const char *name, term data[], int size) {
 
 int transpose(term data[], int size, term out[]) {
     int k = 0, max_col = 0;
-    // max column.
     for (int i = 0; i < size; i++) {
         if (data[i].col > max_col)
             max_col = data[i].col;
-    }
+    } // finding max_col
 
-    term tmp[size];
-    // transposing
+    term tmp[size]; // to store temporary results.
     for (int i = 0; i < size; i++) {
         tmp[k].row = data[i].col;
         tmp[k].col = data[i].row;
@@ -106,24 +104,22 @@ int transpose(term data[], int size, term out[]) {
         k++;
     }
 
-    // sorting
     int count[max_col + 1];
     for (int i = 0; i <= max_col; i++) {
         count[i] = 0;
-    }
+    } // initialising counts to 0
     for (int i = 0; i < size; i++) {
         count[tmp[i].row]++;
-    }
+    } // counting elements to buckets
     for (int i = 1; i <= max_col; i++) {
         count[i] += count[i - 1];
-    }
+    } // summing up the position of each element.
     for (int i = size - 1; i >= 0; i--) {
         out[--count[tmp[i].row]] = tmp[i];
     }
 
     return 0;
 }
-
 // S3_PCCST303_ASSIGNMENT_END
 
 // test.c

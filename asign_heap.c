@@ -5,10 +5,10 @@
 #include <time.h>
 
 //
-// Assignment:
-//   Implement heapsort
+// assignment:
+//   implement heapsort
 //
-// For the questions, read the code/comments below.
+// for the questions, read the code/comments below.
 
 // heap.h
 
@@ -30,92 +30,105 @@ static inline void print(const char *name, int data[], int size) {
     printf("\n");
 }
 
-// Binary heap
+// binary heap
 static inline int left(int i) { return 2 * i + 1; }
 static inline int right(int i) { return 2 * i + 2; }
 static inline int parent(int i) { return (i - 1) / 2; }
 
-void shiftDown(int data[], int size, int x);
+void shiftdown(int data[], int size, int x);
 void heapify(int data[], int size);
 void heapsort(int data[], int size);
 
 // heapsort.c
 
-// S3_PCCST303_ASSIGNMENT_BEGIN
+// s3_pccst303_assignment_begin
 
-// shiftDown
+// shiftdown
 //
-// Input:
-// Given a Maxheap where every node satisfies the heap property
-// ie: Every node value is >= than that of it's immediate children
+// input:
+// given a maxheap where every node satisfies the heap property
+// ie: every node value is >= than that of it's immediate children
 // but the value at x is lower than at least one of the children
 // thus causing node x to fail to satisfy heap property
 //
-// Output: Maxheap, ie: ensure all nodes satisfy the heap property
+// output: maxheap, ie: ensure all nodes satisfy the heap property
 //
-// Idea:
-//  Shift/Swap the node x with the children with max value, say y
-//  Now the node x will satisfy the heap property but that child node y may not
-//  Repeat the same at that child y if its heap property is not satisfied
-//
-
-// Any helper function needed to write shiftDown goes here
-//
-// Heapify
-// Two ways to construct a binary heap from a given array
-//   Start with array of 1 element. It is a binary heap
-//   Now take the second element, and insert into that binary heap
-//   Repeat.
-//
-//   Time complexity:= Sum of depths = Sum O(i)
-//                   = O(log 2 + log 3 + log 4 + .. + log n)
-//                   = O (n*log n)
-//
-//   Can we do better? In O(N)?
-//
-//   We start from the last level, and make it a heap by using shiftDown
-//      Time complexity : n/2 * 1*k
-//   We go to l-1 th level:
-//      Notice their children are already heap,
-//      So every node except only value l-1th node may be lower than its
-//      children, We could fix them by using shiftDown
-//   we make each tree at l-1 th level, a heap, by using shiftDown
-//      Time complexity : n/4 * 2*k
-//   Repeat
-//
-//   Time complexity:=
-//                   = n/2 * 1 + n/4 * 2 + n/8 * 3 + n/16 * 4 + ...
-//                   = n * ( 1/2 + 2/4 + 3/8 + 4/16 + ... )
-//                   <= n * 2
-//                   = O(n)
+// idea:
+//  shift/swap the node x with the children with max value, say y
+//  now the node x will satisfy the heap property but that child node y may not
+//  repeat the same at that child y if its heap property is not satisfied
 //
 
-// Assignment...
-//
-void shiftDown(int data[], int size, int x) {
-    if (x > size)
-        return;
-    else if (data[x] < data[left(x)]) {
-        swap(&data[x], &data[left(x)]);
-        shiftDown(data, size, data[left(x)]);
-    } else if (data[x] < data[right(x)]) {
-        swap(&data[x], &data[right(x)]);
-        shiftDown(data, size, data[right(x)]);
+// any helper function needed to write shiftdown goes here
+
+void shiftdown(int data[], int size, int x) {
+    int l = left(x), r = right(x), largest = x;
+
+    if (l < size && data[l] > data[largest])
+        largest = l;
+
+    if (r < size && data[r] > data[largest])
+        largest = r;
+
+    if (largest != x) {
+        swap(&data[largest], &data[x]);
+        shiftdown(data, size, largest);
     }
 }
 
-// Heapify
-void heapify(int data[], int size) {}
+// heapify
+//
+// two ways to construct a binary heap from a given array
+//   start with array of 1 element. it is a binary heap
+//   now take the second element, and insert into that binary heap
+//   repeat.
+//
+//   time complexity:= sum of depths = sum o(i)
+//                   = o(log 2 + log 3 + log 4 + .. + log n)
+//                   = o (n*log n)
+//
+//   can we do better? in o(n)?
+//
+//   we start from the last level, and make it a heap by using shiftdown
+//      time complexity : n/2 * 1*k
+//   we go to l-1 th level:
+//      notice their children are already heap,
+//      so every node except only value l-1th node may be lower than its
+//      children, we could fix them by using shiftdown
+//   we make each tree at l-1 th level, a heap, by using shiftdown
+//      time complexity : n/4 * 2*k
+//   repeat
+//
+//   time complexity:=
+//                   = n/2 * 1 + n/4 * 2 + n/8 * 3 + n/16 * 4 + ...
+//                   = n * ( 1/2 + 2/4 + 3/8 + 4/16 + ... )
+//                   <= n * 2
+//                   = o(n)
+//
+void heapify(int data[], int size) {
+    for (int x = size - 1; x > 0; x--) {
+        shiftdown(data, size, parent(x));
+    }
+}
 
-// Implement Heap sort
-void heapsort(int data[], int size) {}
+// implement heap sort
+void heapsort(int data[], int size) {
+    // qc: your code goes here
+    // expected lines of code: 3-4.
+    // please do not write more than 10 lines of code
+    heapify(data, size);
+    for (int i = size - 1; i > 0; i--) {
+        swap(&data[0], &data[i]);
+        shiftdown(data, i, 0);
+    }
+}
 
-// S3_PCCST303_ASSIGNMENT_END
+// s3_pccst303_assignment_end
 
 // test.c
 
-// Asserts
-void assertMaxheap(int data[], int size) {
+// asserts
+void assertmaxheap(int data[], int size) {
     for (int i = 0; i < size; i++) {
         if (left(i) < size) {
             assert(geq(data[i], data[left(i)]));
@@ -126,7 +139,7 @@ void assertMaxheap(int data[], int size) {
     }
 }
 
-void assertSorted(int data[], int size) {
+void assertsorted(int data[], int size) {
     for (int i = 1; i < size; i++) {
         assert(leq(data[i - 1], data[i]));
     }
@@ -136,14 +149,14 @@ void prop_heapify(int data[], int size) {
     print("input", data, size);
     heapify(data, size);
     print("heapified", data, size);
-    assertMaxheap(data, size);
+    assertmaxheap(data, size);
 }
 
 void prop_heapsort(int data[], int size) {
     print("input", data, size);
     heapsort(data, size);
     print("heapsorted", data, size);
-    assertSorted(data, size);
+    assertsorted(data, size);
 }
 
 void test1() {
@@ -166,7 +179,7 @@ void test3() {
 
 void test4() {
     for (int t = 0; t < 5; t++) {
-        printf("Test4(%d)\n", t);
+        printf("test4(%d)\n", t);
         int size = 1 + rand() % 10;
 
         int *data = malloc(size * sizeof(int));
@@ -201,7 +214,7 @@ void test7() {
 
 void test8() {
     for (int t = 0; t < 5; t++) {
-        printf("Test8(%d)\n", t);
+        printf("test8(%d)\n", t);
         int size = 1 + rand() % 10;
 
         int *data = malloc(size * sizeof(int));
@@ -226,6 +239,6 @@ int main() {
     test6();
     test7();
     test8();
-    printf("\n!! Congratulations, all tests passed !!\n");
+    printf("\n!! congratulations, all tests passed !!\n");
     return 0;
 }
